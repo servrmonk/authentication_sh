@@ -1,12 +1,15 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useContext } from "react";
 
 import classes from "./AuthForm.module.css";
+import AuthContext from "../../store/auth-context";
 
 const AuthForm = () => {
   const emailInputRef = useRef();
   const passwordInputRef = useRef();
-  const [isLogin, setIsLogin] = useState(true);
 
+  const authCtx = useContext(AuthContext);
+
+  const [isLogin, setIsLogin] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
 
   const switchAuthModeHandler = () => {
@@ -33,11 +36,11 @@ const AuthForm = () => {
       body: JSON.stringify({
         email: enteredEmail,
         password: enteredPassword,
-        returnSecureToken: true
+        returnSecureToken: true,
       }),
       headers: {
-        "Content-Type": "application/json"
-      }
+        "Content-Type": "application/json",
+      },
     })
       .then((res) => {
         setIsLoading(false);
@@ -51,10 +54,10 @@ const AuthForm = () => {
             throw new Error(errorMessage);
           });
         }
-        // iwonna add another then block where i get my response data in the success case or where i catch any error
       })
       .then((data) => {
         console.log("data", data);
+        authCtx.login(data.idToken);
       })
       .catch((err) => {
         alert(err.message);
