@@ -1,9 +1,11 @@
 import { useState, useRef, useContext } from "react";
-
+import { useHistory } from "react-router-dom";
 import classes from "./AuthForm.module.css";
 import AuthContext from "../../store/auth-context";
 
 const AuthForm = () => {
+  const history = useHistory();
+
   const emailInputRef = useRef();
   const passwordInputRef = useRef();
 
@@ -36,11 +38,11 @@ const AuthForm = () => {
       body: JSON.stringify({
         email: enteredEmail,
         password: enteredPassword,
-        returnSecureToken: true,
+        returnSecureToken: true
       }),
       headers: {
-        "Content-Type": "application/json",
-      },
+        "Content-Type": "application/json"
+      }
     })
       .then((res) => {
         setIsLoading(false);
@@ -57,7 +59,9 @@ const AuthForm = () => {
       })
       .then((data) => {
         console.log("data", data);
+
         authCtx.login(data.idToken);
+        history.replace("/"); //replace simply user can't go to the previous page using back button
       })
       .catch((err) => {
         alert(err.message);

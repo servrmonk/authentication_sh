@@ -4,8 +4,9 @@ const AuthContext = React.createContext({
   token: "",
   isLoggedIn: false,
   login: (token) => {},
-  logout: () => {},
+  logout: () => {}
 });
+
 export const AuthContextProvider = (props) => {
   const [token, setToken] = useState(null);
 
@@ -21,7 +22,7 @@ export const AuthContextProvider = (props) => {
     token: token,
     isLoggedIn: userIsLoggedIn,
     login: loginHandler,
-    logout: logoutHandler,
+    logout: logoutHandler
   };
 
   return (
