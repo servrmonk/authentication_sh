@@ -8,7 +8,6 @@ const AuthContext = React.createContext({
 });
 
 export const AuthContextProvider = (props) => {
-
   const initialToken = localStorage.getItem("token");
   const [token, setToken] = useState(initialToken);
 
@@ -17,7 +16,15 @@ export const AuthContextProvider = (props) => {
   const loginHandler = (token) => {
     setToken(token);
     localStorage.setItem("token", token);
+
+    const timer = setTimeout(() => {
+      logoutHandler();
+      alert("Log In Again 5 minute completed");
+    }, 50000);
+
+    return () => clearTimeout(timer);
   };
+
   const logoutHandler = () => {
     setToken(null);
     localStorage.removeItem("token");
